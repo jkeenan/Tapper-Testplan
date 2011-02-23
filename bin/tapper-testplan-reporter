@@ -1,0 +1,9 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use 5.010;
+
+use Tapper::Testplan::Reporter;
+my $reporter = Tapper::Testplan::Reporter->new();
+$reporter->run;

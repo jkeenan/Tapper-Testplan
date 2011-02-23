@@ -1,0 +1,160 @@
+---
+
+# ---------- Suite ----------
+
+- schema: Suite
+  name: perfmon suite
+  data:
+    id: 1
+    name: Topic-Xen
+    type: software
+    description: The Xen Dummy Suite
+  
+  
+# ---------- Report ----------
+
+- schema: Report
+  name: dummy 0
+  data:
+    id: 1
+    suite_id: 1
+    suite_version: 3.12
+    successgrade: FAIL
+
+- schema: Tap
+  name: tap 10
+  data:
+    id: 1
+    report_id: 1
+    tap: |
+      1..2
+      ok 1 metainformation
+      # Tapper-section: Metainfo
+      # Tapper-Suite-Name: Host-Overview
+      # Tapper-Suite-version: 0.010003
+      # Tapper-machine-name: athene
+      # Tapper-machine-description: PC-Ware
+      # Tapper-cpuinfo: 1x Family: 15, Model: 75, Stepping: 2
+      # Tapper-ram: 3967 MB
+      # Tapper-uptime: 0 hrs
+      # Tapper-reportgroup-testrun: 6567
+      ok 1 host metadata
+      1..1
+      # Tapper-section: XEN-Metainfo
+      # Tapper-xen-version: 3.4.2-rc1-pre
+      # Tapper-xen-changeset: 19754:7422afed66ee
+      # Tapper-xen-base-os-description: SUSE Linux Enterprise Server 10 SP2 (i586)
+      # Tapper-xen-dom0-kernel: 2.6.18.8-xen i686
+      ok 1 xen metadata
+      1..1
+      # Tapper-section: guest_1_suse_sles10_sp3_rc2_32b_smp_qcow
+      # Tapper-xen-guest-description: 001-lmbench
+      # Tapper-xen-guest-start: 2009-09-10 11:00:16 CEST
+      # Tapper-xen-guest-flags: acpi=1; apic=1; hap=1; hpet=0; memory=1024; pae=1; shadow_memory=10; timer_mode=2; vcpus=2
+      ok 1 - Guest info
+      1..1
+      # Tapper-section: guest_2_opensuse_11_1_32b_qcow
+      # Tapper-xen-guest-description: 002-ctcs
+      # Tapper-xen-guest-start: 2009-09-10 11:00:19 CEST
+      # Tapper-xen-guest-flags: acpi=1; apic=1; hap=1; hpet=0; memory=1280; pae=1; shadow_memory=12; timer_mode=2; vcpus=1
+      not ok 1 - Guest info
+
+
+- schema: Report
+  name: dummy 0
+  data:
+    id: 2
+    suite_id: 1
+    suite_version: 3.12
+    successgrade: PASS
+
+- schema: Tap
+  name: tap 10
+  data:
+    id: 2
+    report_id: 2
+    tap: |
+      1..2
+      ok 1 metainformation
+      # Tapper-section: Metainfo
+      # Tapper-Suite-Name: Host-Overview
+      # Tapper-Suite-version: 0.010003
+      # Tapper-machine-name: athene
+      # Tapper-machine-description: PC-Ware
+      # Tapper-cpuinfo: 1x Family: 15, Model: 75, Stepping: 2
+      # Tapper-ram: 3967 MB
+      # Tapper-uptime: 0 hrs
+      # Tapper-reportgroup-testrun: 6567
+      ok 1 host metadata
+      1..1
+      # Tapper-section: XEN-Metainfo
+      # Tapper-xen-version: 3.4.2-rc1-pre
+      # Tapper-xen-changeset: 19754:7422afed66ee
+      # Tapper-xen-base-os-description: SUSE Linux Enterprise Server 10 SP2 (i586)
+      # Tapper-xen-dom0-kernel: 2.6.18.8-xen i686
+      ok 1 xen metadata
+      1..1
+      # Tapper-section: guest_1_suse_sles10_sp3_rc2_32b_smp_qcow
+      # Tapper-xen-guest-description: 001-lmbench
+      # Tapper-xen-guest-start: 2009-09-10 11:00:16 CEST
+      # Tapper-xen-guest-flags: acpi=1; apic=1; hap=1; hpet=0; memory=1024; pae=1; shadow_memory=10; timer_mode=2; vcpus=2
+      ok 1 - Guest info
+      1..1
+      # Tapper-section: guest_2_opensuse_11_1_32b_qcow
+      # Tapper-xen-guest-description: 002-ctcs
+      # Tapper-xen-guest-start: 2009-09-10 11:00:19 CEST
+      # Tapper-xen-guest-flags: acpi=1; apic=1; hap=1; hpet=0; memory=1280; pae=1; shadow_memory=12; timer_mode=2; vcpus=1
+      ok 1 - Guest info
+
+
+# testrun 17: [ 23, 22, 20 ]
+
+- schema: ReportgroupTestrun
+  name: Group_TR_1
+  data:
+    testrun_id: 1
+    report_id: 1
+    primaryreport: 1
+
+
+- schema: ReportgroupTestrunStats
+  name: Stats_TR_1
+  data:
+    testrun_id: 1
+    total: 5
+    failed: 1
+    passed: 4
+    parse_errors: 0
+    skipped: 0
+    todo: 0
+    todo_passed: 0
+    wait: 0
+    success_ratio: 75
+
+- schema: ReportgroupTestrunStats
+  name: Stats_TR_1
+  data:
+    testrun_id: 4
+    total: 5
+    failed: 0
+    passed: 5
+    parse_errors: 0
+    skipped: 0
+    todo: 0
+    todo_passed: 0
+    wait: 0
+    success_ratio: 100
+
+- schema: ReportgroupTestrunStats
+  name: Stats_TR_1
+  data:
+    testrun_id: 5
+    total: 5
+    failed: 0
+    passed: 5
+    parse_errors: 0
+    skipped: 0
+    todo: 0
+    todo_passed: 0
+    wait: 0
+    success_ratio: 100

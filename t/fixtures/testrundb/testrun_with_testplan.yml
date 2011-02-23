@@ -1,0 +1,189 @@
+---
+
+# -------------------- users
+
+- schema: User
+  name: sschwigo
+  data:
+    id: 12
+    name: Steffen Schwigon
+    login: sschwigo
+    password: verysecret
+
+- schema: Queue
+  name: AdHoc
+  data:
+    id: 1
+    name: AdHoc
+    priority: 300
+    active: 1
+
+
+# -------------------- topics
+
+- schema: Topic
+  name: software
+  data:
+    name: Software
+    description: any non-kernel software, e.g., libraries, programs
+
+# -------------------- testruns "perfmon", "lmbench"
+
+- schema: Testrun
+  name: finished_tr
+  data:
+    id: 1
+    owner_user_id: 12
+    shortname: finished_tr
+    notes: finished testrun in testplan 1
+    topic_name: Software
+    testplan_id: 1
+
+- schema: TestrunScheduling
+  name: finished_ts
+  data:
+    id: 1
+    testrun_id: 1
+    host_id: 1
+    status: finished
+
+- schema: Testrun
+  name: running_tr
+  data:
+    id: 2
+    owner_user_id: 12
+    shortname: running_tr
+    notes: running testrun in testplan 1
+    topic_name: Software
+    testplan_id: 2
+
+- schema: TestrunScheduling
+  name: running_ts
+  data:
+    id: 2
+    testrun_id: 2
+    host_id: 1
+    status: running
+
+- schema: Testrun
+  name: scheduled_tr
+  data:
+    id: 3
+    owner_user_id: 12
+    shortname: scheduled_tr
+    notes: scheduled testrun in testplan 1
+    topic_name: Software
+    testplan_id: 2
+
+
+- schema: TestrunScheduling
+  name: scheduled_ts
+  data:
+    id: 3
+    testrun_id: 3
+    host_id: 1
+    status: schedule
+
+- schema: Testrun
+  name: finished_tr
+  data:
+    id: 4
+    owner_user_id: 12
+    shortname: finished_tr
+    notes: finished testrun in testplan 1
+    topic_name: Software
+    testplan_id: 2
+
+- schema: TestrunScheduling
+  name: finished_ts
+  data:
+    id: 4
+    testrun_id: 4
+    host_id: 1
+    status: finished
+
+
+- schema: Testrun
+  name: finished_tr
+  data:
+    id: 5
+    owner_user_id: 12
+    shortname: finished_tr
+    notes: finished testrun in testplan 1
+    topic_name: Software
+    testplan_id: 3
+
+- schema: TestrunScheduling
+  name: finished_ts
+  data:
+    id: 5
+    testrun_id: 5
+    host_id: 1
+    status: finished
+
+
+- schema: Testrun
+  name: noplan_tr
+  data:
+    id: 100
+    owner_user_id: 12
+    shortname: noplan_tr
+    notes: running testrun with no testplan
+    topic_name: Software
+
+- schema: TestrunScheduling
+  name: noplan_ts
+  data:
+    id: 100
+    testrun_id: 100
+    host_id: 1
+    status: running
+
+
+
+# ----------- Test plan instances
+
+- schema: TestplanInstance
+  name: testplan_one
+  data:
+    id: 1
+    path: osrc/kernel/barracuda/server/kvm/svm_asid/tapper/LK_39
+
+- schema: TestplanInstance
+  name: testplan_two
+  data:
+    id: 2
+    path: osrc/kernel/barracuda/server/kvm/svm_decode/tapper/LK_38
+
+- schema: TestplanInstance
+  name: testplan_three
+  data:
+    id: 3
+    path: osrc/kernel/barracuda/server/kvm/svm_decode/tapper/SLES_11SP2
+
+
+# ----------- Hosts
+
+- schema: Host
+  name: iring
+  data:
+    id: 1
+    name: iring
+    free: 1
+    active: 1
+
+- schema: Host
+  name: bullock
+  data:
+    id: 6
+    name: bullock
+    free: 1
+    active: 1
+
+- schema: Host
+  name: dickstone
+  data:
+    id: 7
+    name: dickstone
+    free: 1
+    active: 1
