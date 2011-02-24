@@ -90,7 +90,7 @@ fail($@) if $@;
 
 my $parser    = DateTime::Format::Natural->new(time_zone   => 'Europe/Berlin');
 my $formatter = DateTime::Format::Strptime->new(pattern     => '%Y-%m-%d-00:00-%z');
-my $start     = $parser->parse_datetime("last monday");
+my $start     = $parser->parse_datetime("this monday");
 my $end       = $parser->parse_datetime("next monday");
 $start->set_formatter($formatter);
 $end->set_formatter($formatter);

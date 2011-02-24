@@ -22,8 +22,11 @@ use WWW::Mechanize;
 
 # extends 'Tapper::Testplan::Plugins';
 
-has cfg => (is => 'ro');
-
+has cfg        => ( is      => 'ro');
+has start_date => ( is      => 'ro',
+                    default => sub {DateTime::Format::Natural->new(time_zone   => 'Europe/Berlin')->parse_datetime("this monday at 0:00")});
+has end_date   => ( is      => 'ro',
+                    default => sub {DateTime::Format::Natural->new(time_zone   => 'Europe/Berlin')->parse_datetime("next monday at 0:00")});
 
 =head1 NAME
 
@@ -214,9 +217,9 @@ sub send_reports
                         $report->{details}.= join ",",map {$_->id} @{$report->{tests_finished}};
                 }
         }
-        my $macros = { start_date => $parser->parse_datetime("last monday")->set_formatter($formatter),
-                       end_date => $parser->parse_datetime("next monday")->set_formatter($formatter),
-                       reports => [ @reports ] };
+        my $macros = { start_date => $self->start_date->set_formatter($formatter),
+                       end_date   => $self->end_date->set_formatter($formatter),
+                       reports    => [ @reports ] };
         my $tt = Template->new();
         my $ttapplied;
         $tt->process(\$mail_template, $macros, \$ttapplied) || die $tt->error();
