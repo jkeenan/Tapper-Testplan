@@ -71,8 +71,9 @@ Hash::Merge::set_behavior( 'RIGHT_PRECEDENT' );
 Tapper::Config->subconfig->{testplans} = merge(
                                                 Tapper::Config->subconfig->{testplans},
                                                 { reporter   =>
-                                                  { plugin   => { name     => 'Taskjuggler',
-                                                                  url      => $d->url,
+                                                  { plugin   => { name      => 'Taskjuggler',
+                                                                  url       => $d->url,
+                                                                  cacheroot =>  '/tmp/cacheroot_test/'
                                                                 },
                                                     interval => 1*24*60*60,
                                                   }
@@ -97,13 +98,13 @@ $end->set_formatter($formatter);
 is($mailtext, "timesheet tapper $start - $end {\n".
 '  task osrc.kernel.barracuda.server.kvm.svm_asid.tapper.SLES_11SP2 {
     work 16.67%
-    end 2010-03-16-00:00-+0100
+    end 2011-05-04-00:00-+0100
     status red "No tests defined" {
     }
   }
   task osrc.kernel.barracuda.server.kvm.svm_asid.tapper.LK_39 {
     work 16.67%
-    end 2010-03-16-00:00-+0100
+    end 2011-05-04-00:00-+0100
     status red "Success ratio 75%" {
     details
 -8<-
@@ -114,13 +115,13 @@ https://tapper/tapper/testruns/idlist/1
   }
   task only.to.get.work.fractions.task1 {
     work 16.67%
-    end 2010-05-19-00:00-+0100
+    end 2011-06-30-00:00-+0100
     status red "No tests defined" {
     }
   }
   task osrc.kernel.barracuda.server.kvm.svm_decode.tapper.SLES_11SP2 {
     work 16.67%
-    end 2010-05-19-00:00-+0100
+    end 2011-06-30-00:00-+0100
     status green "All tests successful for this test plan" {
     details
 -8<-
@@ -131,7 +132,7 @@ https://tapper/tapper/testruns/idlist/5
   }
   task osrc.kernel.barracuda.server.kvm.svm_decode.tapper.LK_38 {
     work 16.67%
-    end 2010-05-19-00:00-+0100
+    end 2011-06-30-00:00-+0100
     status yellow "33.3% successful (1 of 3). 66.7% unfinished (2 of 3)." {
     details
 -8<-
@@ -145,7 +146,7 @@ https://tapper/tapper/testruns/idlist/2,3
   }
   task only.to.get.work.fractions.task1 {
     work 16.65%
-    end 2010-05-19-00:00-+0100
+    end 2011-06-30-00:00-+0100
     status red "No tests defined" {
     }
   }
