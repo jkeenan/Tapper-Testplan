@@ -165,7 +165,7 @@ sub send_reports
  REPORT:
         for (my $num=0; $num < int @reports; $num++) { # need to know when we reached the last report
                 my $report = $reports[$num];
-                $report->{work_end} = $report->{start}->add(hours => 1)->set_formatter($formatter);
+                $report->{work_end} = $report->{end}->set_formatter($formatter);
                 $report->{path} =~ s|/|.|g;
                 $report->{work} = sprintf ("%.2f",100/(int @reports));
 
