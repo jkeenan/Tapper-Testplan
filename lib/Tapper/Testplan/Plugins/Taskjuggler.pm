@@ -176,6 +176,8 @@ sub send_reports
                 if (@{$report->{tests_all}} < 1) {
                         $report->{status}   = 'red';
                         $report->{headline} = 'No tests defined';
+                        $report->{details}  = "Unable to find a test plan instance for this task. ";
+                        $report->{details} .= "Either no test plan was defined or the testplan generator skipped it for some reason";
                         next REPORT;
                 }
                 if ($report->{success} < 100) {

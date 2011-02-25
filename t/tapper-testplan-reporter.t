@@ -100,6 +100,10 @@ is($mailtext, "timesheet tapper $start - $end {\n".
     work 16.67%
     end 2011-05-04-00:00-+0100
     status red "No tests defined" {
+    details
+-8<-
+Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+->8-
     }
   }
   task osrc.kernel.barracuda.server.kvm.svm_asid.tapper.LK_39 {
@@ -117,6 +121,10 @@ https://tapper/tapper/testruns/idlist/1
     work 16.67%
     end 2011-06-30-00:00-+0100
     status red "No tests defined" {
+    details
+-8<-
+Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+->8-
     }
   }
   task osrc.kernel.barracuda.server.kvm.svm_decode.tapper.SLES_11SP2 {
@@ -148,6 +156,10 @@ https://tapper/tapper/testruns/idlist/2,3
     work 16.65%
     end 2011-06-30-00:00-+0100
     status red "No tests defined" {
+    details
+-8<-
+Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+->8-
     }
   }
 }
