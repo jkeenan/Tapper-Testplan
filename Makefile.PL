@@ -7,6 +7,8 @@ license  'perl';
 
 build_requires 'Test::More';
 
+author_requires 'Module::Install::WriteAll';
+
 requires 'Moose' => 0;
 
 requires 'Tapper::Config'  => 2.010076;
