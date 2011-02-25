@@ -1,7 +1,7 @@
 timesheet tapper [% start_date %] - [% end_date %] {
 [%- FOREACH report IN reports %]
   task [% report.path %] {
-    work [% report.work %]%
+    work 0%
     end [% report.work_end %]
     status [% report.status %] "[% report.headline %]" {
 [%- IF report.summary -%]
