@@ -4,7 +4,7 @@ timesheet tapper [% start_date %] - [% end_date %] {
     work 0%
     end [% report.work_end %]
     status [% report.status %] "[% report.headline %]" {
-[%- IF report.summary -%]
+[%- IF report.summary %]
     summary
 -8<-
 [% report.summary %]
