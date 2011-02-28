@@ -97,15 +97,27 @@ $end->set_formatter($formatter);
 
 is($mailtext, "timesheet tapper $start - $end {\n".
 '  task osrc.kernel.barracuda.server.kvm.svm_asid.tapper.SLES_11SP2 {
-    work 16.67%
-    end 2011-05-04-00:00-+0100
-    status red "No tests defined" {
+    work 0%
+    end 3011-05-04-00:00-+0100
+    status red "KVM: Support Flush by ASID" {
+    summary
+-8<-
+No tests defined
+->8-
+    details
+-8<-
+Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+->8-
     }
   }
   task osrc.kernel.barracuda.server.kvm.svm_asid.tapper.LK_39 {
-    work 16.67%
-    end 2011-05-04-00:00-+0100
-    status red "Success ratio 75%" {
+    work 0%
+    end 3011-05-04-00:00-+0100
+    status red "KVM: Support Flush by ASID" {
+    summary
+-8<-
+Success ratio 75%
+->8-
     details
 -8<-
 == All testruns ==
@@ -114,15 +126,27 @@ https://tapper/tapper/testruns/idlist/1
     }
   }
   task only.to.get.work.fractions.task1 {
-    work 16.67%
-    end 2011-06-30-00:00-+0100
-    status red "No tests defined" {
+    work 0%
+    end 3011-06-30-00:00-+0100
+    status red "KVM: Support Decode Assists" {
+    summary
+-8<-
+No tests defined
+->8-
+    details
+-8<-
+Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+->8-
     }
   }
   task osrc.kernel.barracuda.server.kvm.svm_decode.tapper.SLES_11SP2 {
-    work 16.67%
-    end 2011-06-30-00:00-+0100
-    status green "All tests successful for this test plan" {
+    work 0%
+    end 3011-06-30-00:00-+0100
+    status green "KVM: Support Decode Assists" {
+    summary
+-8<-
+All tests successful for this test plan
+->8-
     details
 -8<-
 == Successful testruns ==
@@ -131,9 +155,13 @@ https://tapper/tapper/testruns/idlist/5
     }
   }
   task osrc.kernel.barracuda.server.kvm.svm_decode.tapper.LK_38 {
-    work 16.67%
-    end 2011-06-30-00:00-+0100
-    status yellow "33.3% successful (1 of 3). 66.7% unfinished (2 of 3)." {
+    work 0%
+    end 3011-06-30-00:00-+0100
+    status yellow "KVM: Support Decode Assists" {
+    summary
+-8<-
+33.3% successful (1 of 3). 66.7% unfinished (2 of 3).
+->8-
     details
 -8<-
 == Successful testruns ==
@@ -145,9 +173,17 @@ https://tapper/tapper/testruns/idlist/2,3
     }
   }
   task only.to.get.work.fractions.task1 {
-    work 16.65%
-    end 2011-06-30-00:00-+0100
-    status red "No tests defined" {
+    work 0%
+    end 3011-06-30-00:00-+0100
+    status red "KVM: Support Decode Assists" {
+    summary
+-8<-
+No tests defined
+->8-
+    details
+-8<-
+Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+->8-
     }
   }
 }
