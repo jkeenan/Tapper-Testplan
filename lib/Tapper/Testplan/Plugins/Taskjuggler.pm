@@ -160,13 +160,13 @@ sub send_reports
         my $mail_template = slurp module_file('Tapper::Testplan::Plugins::Taskjuggler', 'mail.template');
         my $parser    = DateTime::Format::Natural->new(time_zone   => 'Europe/Berlin');
         my $formatter = DateTime::Format::Strptime->new(pattern     => '%Y-%m-%d-00:00-%z');
-
  REPORT:
         for (my $num=0; $num < int @reports; $num++) { # need to know when we reached the last report
                 my $report = $reports[$num];
                 $report->{work_end} = $report->{end}->set_formatter($formatter);
                 $report->{path} =~ s|/|.|g;
                 $report->{work} = sprintf ("%.2f",100/(int @reports));
+                $report->{headline} = $report->{name};
 
                 if ($num == $#reports) {
                         $report->{work} =  sprintf ("%.2f", 100 - $worksum);
@@ -175,31 +175,31 @@ sub send_reports
                 }
                 if (@{$report->{tests_all}} < 1) {
                         $report->{status}   = 'red';
-                        $report->{headline} = 'No tests defined';
-                        $report->{details}  = "Unable to find a test plan instance for this task. ";
+                        $report->{summary}  = "No tests defined";
+                        $report->{details} .= "Unable to find a test plan instance for this task. ";
                         $report->{details} .= "Either no test plan was defined or the testplan generator skipped it for some reason";
                         next REPORT;
                 }
                 if ($report->{success} < 100) {
-                        $report->{status}   = 'red';
-                        $report->{headline} = 'Success ratio '.$report->{success}.'%';
+                        $report->{status}  = 'red';
+                        $report->{summary} = 'Success ratio '.$report->{success}.'%';
                         $report->{details} = "== All testruns ==\n";
                         $report->{details}.= "$base_url/tapper/testruns/idlist/";
                         $report->{details}.= join ",",map {$_->id} @{$report->{tests_finished}};
                 } elsif (@{$report->{tests_all}} > @{$report->{tests_finished}}) {
                         $report->{status}   = 'yellow';
-                        $report->{headline} = sprintf ("%.1f", (@{$report->{tests_finished}}/@{$report->{tests_all}})*100);
-                        $report->{headline}.= "% successful (";
-                        $report->{headline}.= int @{$report->{tests_finished}};
-                        $report->{headline}.= " of ";
-                        $report->{headline}.= int @{$report->{tests_all}};
-                        $report->{headline}.= "). ";
-                        $report->{headline}.= sprintf ("%.1f", (1 - @{$report->{tests_finished}} / @{$report->{tests_all}})*100);
-                        $report->{headline}.= "% unfinished (";
-                        $report->{headline}.= @{$report->{tests_all}} - @{$report->{tests_finished}};
-                        $report->{headline}.= " of ";
-                        $report->{headline}.= int @{$report->{tests_all}};
-                        $report->{headline}.= ").";
+                        $report->{summary} = sprintf ("%.1f", (@{$report->{tests_finished}}/@{$report->{tests_all}})*100);
+                        $report->{summary}.= "% successful (";
+                        $report->{summary}.= int @{$report->{tests_finished}};
+                        $report->{summary}.= " of ";
+                        $report->{summary}.= int @{$report->{tests_all}};
+                        $report->{summary}.= "). ";
+                        $report->{summary}.= sprintf ("%.1f", (1 - @{$report->{tests_finished}} / @{$report->{tests_all}})*100);
+                        $report->{summary}.= "% unfinished (";
+                        $report->{summary}.= @{$report->{tests_all}} - @{$report->{tests_finished}};
+                        $report->{summary}.= " of ";
+                        $report->{summary}.= int @{$report->{tests_all}};
+                        $report->{summary}.= ").";
 
                         $report->{details} = "== Successful testruns ==\n";
                         $report->{details}.= "$base_url/tapper/testruns/idlist/";
@@ -209,7 +209,7 @@ sub send_reports
                         $report->{details}.= join ",",map {$_->id} (@{$report->{tests_running}}, @{$report->{tests_scheduled}});
                 } else {
                         $report->{status}   = 'green';
-                        $report->{headline} = "All tests successful for this test plan";
+                        $report->{summary} = "All tests successful for this test plan";
                         $report->{details} = "== Successful testruns ==\n";
                         $report->{details}.= "$base_url/tapper/testruns/idlist/";
                         $report->{details}.= join ",",map {$_->id} @{$report->{tests_finished}};
