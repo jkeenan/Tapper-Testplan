@@ -29,7 +29,7 @@ requires 'Template' => 0;
 requires 'Text::CSV::Slurp' => 0;
 requires 'WWW::Mechanize' => 0;
 
-
+install_script glob('bin/*');
 auto_install;
 
 WriteAll;
