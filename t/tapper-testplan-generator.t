@@ -77,7 +77,7 @@ is(int @instances, 1, 'One instance created');
 if (@instances) {
         my $inst = model('TestrunDB')->resultset('TestplanInstance')->find($instances[0]);
         ok($inst, 'Testplan instance in db');
-
+        is($inst->name, 'KVM: Support Flush by ASID', 'Name of the testplan instance');
         my @preconditions =  map {$_->precondition_as_hash} $inst->testruns->first->ordered_preconditions;
         is_deeply(\@preconditions, [
           {

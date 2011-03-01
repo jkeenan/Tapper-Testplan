@@ -86,7 +86,7 @@ sub run
         foreach my $task ($reporter->get_tasks()) {
                 
                 my $path  = $task->{path};
-
+                my $name  = $task->{name};
 
                 my $instances = model('TestrunDB')->resultset('TestplanInstance')->search
                   ({ path => $path,
@@ -100,7 +100,7 @@ sub run
                 my $plan = slurp($file);
                 $plan = $self->apply_macro($plan);
                 my $cmd = Tapper::Cmd::Testplan->new();
-                push @instances, $cmd->add($plan, $path);
+                push @instances, $cmd->add($plan, $path, $name);
         }
         return @instances;
 }
