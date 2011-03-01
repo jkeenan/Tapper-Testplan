@@ -2,7 +2,7 @@ use inc::Module::Install;
 
 name     'Tapper-Testplan';
 all_from 'lib/Tapper/Testplan.pm';
-author   'OSRC SysInt Team <osrc-sysint@elbe.amd.com>';
+author   'AMD OSRC Tapper Team <tapper@amd64.com>';
 license  'perl';
 
 build_requires 'Test::More';
