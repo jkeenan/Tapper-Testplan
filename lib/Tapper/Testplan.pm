@@ -7,7 +7,7 @@ use strict;
 
 =head1 NAME
 
-Tapper::Testplan - Testplan base module!
+Tapper::Testplan - Tapper - Testplan support
 
 =cut
 
