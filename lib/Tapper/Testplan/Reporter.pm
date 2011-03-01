@@ -124,7 +124,7 @@ L<http://search.cpan.org/dist/Tapper-Testplan-Reporter/>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2011 OSRC SysInt Team, all rights reserved.
+Copyright 2008-2011 AMD OSRC Tapper Team, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
