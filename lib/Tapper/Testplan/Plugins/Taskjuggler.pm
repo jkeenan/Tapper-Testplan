@@ -203,7 +203,7 @@ sub send_reports
                 if ($report->{success} < 100) {
                         $report->{status}  = 'red';
                         $report->{summary} = 'Success ratio '.$report->{success}.'%';
-                        $report->{details} = "== All testruns ==\n";
+                        $report->{details} = "=== All testruns ===\n";
                         $report->{details}.= "$base_url/tapper/testruns/idlist/";
                         $report->{details}.= join ",",map {$_->id} @{$report->{tests_finished}};
                 } elsif (@{$report->{tests_all}} > @{$report->{tests_finished}}) {
@@ -221,16 +221,16 @@ sub send_reports
                         $report->{summary}.= int @{$report->{tests_all}};
                         $report->{summary}.= ").";
 
-                        $report->{details} = "== Successful testruns ==\n";
+                        $report->{details} = "=== Successful testruns ===\n";
                         $report->{details}.= "$base_url/tapper/testruns/idlist/";
                         $report->{details}.= join ",",map {$_->id} @{$report->{tests_finished}};
-                        $report->{details}.= "\n\n== Unfinished testruns ==\n";
+                        $report->{details}.= "\n\n=== Unfinished testruns ===\n";
                         $report->{details}.= "$base_url/tapper/testruns/idlist/";
                         $report->{details}.= join ",",map {$_->id} (@{$report->{tests_running}}, @{$report->{tests_scheduled}});
                 } else {
                         $report->{status}   = 'green';
                         $report->{summary} = "All tests successful for this test plan";
-                        $report->{details} = "== Successful testruns ==\n";
+                        $report->{details} = "=== Successful testruns ===\n";
                         $report->{details}.= "$base_url/tapper/testruns/idlist/";
                         $report->{details}.= join ",",map {$_->id} @{$report->{tests_finished}};
                 }
