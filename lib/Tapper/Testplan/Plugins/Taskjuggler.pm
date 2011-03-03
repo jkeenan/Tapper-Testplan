@@ -38,9 +38,50 @@ Tapper::Testplan::Reporter::Plugins::Taskjuggler - Main module for testplan repo
 
 =head1 FUNCTIONS
 
+=head2 fetch_data
+
+Get the data about platforms and data from cache or remote.
+
+=cut
+
+sub fetch_data
+{
+        my ($self) = @_;
+        my $cache = CHI->new( driver => 'File',
+                              root_dir => $self->cfg->{cacheroot}
+                            );
+        my @platforms;
+        my $platforms = $cache->get( 'reports' );
+        return $platforms if $platforms;
+        my $mech = WWW::Mechanize->new();
+        $mech->get($self->cfg->{url});
+        my @platform_files = $mech->find_all_links( text_regex => qr/Tapper_/i );
+        foreach my $file (@platform_files) {
+                my ($platform_name) = $file->url =~ m/Tapper_(.+)_Matrix/;
+                $platform_name    =~ tr/_/-/;
+                my $data = Text::CSV::Slurp->load(string     => $mech->get($file->url)->content(),
+                                                  binary   => 1,
+                                                  sep_char => ";"
+                                                 );
+                my $platform = {name  => $platform_name,
+                                tasks => $data};
+                push @platforms, $platform;
+        }
+        $cache->set( 'platforms', \@platforms, $self->cfg->{cachetime} );
+        return \@platforms;
+}
+
+=head2 get_platforms
+
+Get a list of platforms together with their associated tasks.
+
+=cut
+
 =head2 get_tasks
 
 Get a list of testplans we want reports for.
+
+@optparam hash ref - contains "start" and "end" DateTime object
 
 @return array - contains DBIC result objects
 
@@ -49,65 +90,45 @@ Get a list of testplans we want reports for.
 sub get_tasks
 {
 
-        my ($self) = @_;
+        my ($self, $times) = @_;
 
-        my $cache = CHI->new( driver => 'File',
-                              root_dir => $self->cfg->{cacheroot}
-                            );
-        my $reports = $cache->get( 'reports' );
-
+        my $now       = DateTime->now();
         my @reports;
+        foreach my $platform (@{$self->fetch_data() || []}) {
+        TASK:
+                foreach my $task (@{$platform->{tasks} || [] }) {
+                        my $start_time = $task->{Start}                               ?
+                          DateTime::Format::DateParse->parse_datetime($task->{Start}) :
+                                    DateTime::Infinite::Past->new();
+                        my $end_time   = $task->{End}                                 ?
+                          DateTime::Format::DateParse->parse_datetime($task->{End})   :
+                                    DateTime::Infinite::Future->new();
+                        my $task_name  = $task->{'Task Name'};
+                        if ($times and ref $times eq 'HASH') {
+                                next TASK unless $start_time <= $times->{start} and
+                                  $end_time >= $times->{end};
+                        } else {
+                                next TASK unless $start_time < $now and
+                                  $end_time > ($now->subtract(weeks => 1));
+                        }
 
-        if (not $reports) {
-                my $mech = WWW::Mechanize->new();
-                $mech->get($self->cfg->{url});
-                my @platforms = $mech->find_all_links( text_regex => qr/Tapper_/i );
-                my @projects;
-                my $now       = DateTime->now();
+                        delete $task->{Start};
+                        delete $task->{End};
+                        delete $task->{'Task Name'};
 
-                foreach my $link (@platforms) {
-                        push @projects, $mech->get($link->url)->content();
-                }
+                SUBTASK:
+                        foreach my $subtask (keys %{$task || {}}) {
 
+                                next SUBTASK if not $task->{$subtask};
+                                $task->{$subtask} =~ s|\.|/|g;
 
-                foreach my $project (@projects) {
-                        my $data = Text::CSV::Slurp->load(string     => $project,
-                                                          binary   => 1,
-                                                          sep_char => ";"
-                                                         );
-                TASK:
-                        foreach my $task (@{$data || [] }) {
-                                my $start_time = $task->{Start}                               ?
-                                  DateTime::Format::DateParse->parse_datetime($task->{Start}) :
-                                            DateTime::Infinite::Past->new();
-                                my $end_time   = $task->{End}                                 ?
-                                  DateTime::Format::DateParse->parse_datetime($task->{End})   :
-                                            DateTime::Infinite::Future->new();
-                                my $task_name  = $task->{'Task Name'};
-                                next TASK unless $start_time < $now and $end_time > ($now->subtract(weeks => 1));
-
-                                delete $task->{Start};
-                                delete $task->{End};
-                                delete $task->{'Task Name'};
-
-                        SUBTASK:
-                                foreach my $subtask (keys %{$task || {}}) {
-
-                                        next SUBTASK if not $task->{$subtask};
-                                        $task->{$subtask} =~ s|\.|/|g;
-
-                                        push @reports, {start => $start_time,
-                                                        end   => $end_time,
-                                                        name  => $task_name,
-                                                        path  => $task->{$subtask}};
-                                }
+                                push @reports, {start => $start_time,
+                                                end   => $end_time,
+                                                name  => $task_name,
+                                                path  => $task->{$subtask}};
                         }
                 }
-                $cache->set( 'reports', \@reports, $self->cfg->{cachetime} );
-        } else {
-                @reports = @{$reports};
         }
-
         return @reports;
 }
 
@@ -135,7 +156,6 @@ sub send_mail
                                                     ],
                                           body => $mailtext,
                                          );
-
         sendmail($email, { transport => $transport });
         return;
 }
