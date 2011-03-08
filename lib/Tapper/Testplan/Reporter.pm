@@ -45,13 +45,12 @@ sub run
                 my $path  = $task->{path};
 
 
-                my $instances = model('TestrunDB')->resultset('TestplanInstance')->search
+                my $instance = model('TestrunDB')->resultset('TestplanInstance')->search
                   ({ path => $path,
-                     created_at => { '>=' => $now - $intervall }});
-                my @testruns = map {$_->testruns} $instances->all;
-                my @testrun_ids = map {$_->id } @testruns;
+                     created_at => { '>=' => $now - $intervall }},{order_by => {-desc => 'id'}})->first;
 
-                if (@testrun_ids) {
+                if ($instance) {
+                        my @testrun_ids = map {$_->id } $instance->testruns;
                         my $stats   = model('ReportsDB')->resultset('ReportgroupTestrunStats')->search({testrun_id => {-in => [@testrun_ids]}});
                         my $success = 0;
                         if ($stats->count) {
@@ -60,10 +59,10 @@ sub run
                         } else {
                                 $task->{success} = 0;
                         }
-                        $task->{tests_all}       = [ @testruns ];
-                        $task->{tests_scheduled} = [ grep {$_->testrun_scheduling->status eq 'schedule'} @testruns ];
-                        $task->{tests_running}   = [ grep {$_->testrun_scheduling->status eq 'running'}  @testruns ];
-                        $task->{tests_finished}  = [ grep {$_->testrun_scheduling->status eq 'finished'} @testruns ];
+                        $task->{tests_all}       = [ $instance->testruns->all ];
+                        $task->{tests_scheduled} = [ grep {$_->testrun_scheduling->status eq 'schedule'} $instance->testruns->all ];
+                        $task->{tests_running}   = [ grep {$_->testrun_scheduling->status eq 'running'}  $instance->testruns->all ];
+                        $task->{tests_finished}  = [ grep {$_->testrun_scheduling->status eq 'finished'} $instance->testruns->all ];
                 } else {
                         $task->{success} = 0;
                         $task->{tests_all}       = [];
