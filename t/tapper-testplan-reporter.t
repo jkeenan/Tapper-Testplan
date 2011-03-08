@@ -4,6 +4,7 @@ use warnings;
 use 5.010;
 
 use Test::More;
+use Test::Differences;
 use Hash::Merge 'merge';
 
 use Tapper::Schema::TestTools;
@@ -95,7 +96,8 @@ my $end       = $parser->parse_datetime("next monday");
 $start->set_formatter($formatter);
 $end->set_formatter($formatter);
 
-is($mailtext, "timesheet tapper $start - $end {\n".
+my $expected = "timesheet tapper $start - $end {
+".
 '  task osrc.kernel.barracuda.server.kvm.svm_asid.tapper.SLES_11SP2 {
     work 0%
     end 3011-05-04-00:00-+0100
@@ -120,7 +122,7 @@ Success ratio 75%
 ->8-
     details
 -8<-
-== All testruns ==
+=== All testruns ===
 https://tapper/tapper/testruns/idlist/1
 ->8-
     }
@@ -149,7 +151,7 @@ All tests successful for this test plan
 ->8-
     details
 -8<-
-== Successful testruns ==
+=== Successful testruns ===
 https://tapper/tapper/testruns/idlist/5
 ->8-
     }
@@ -164,10 +166,10 @@ https://tapper/tapper/testruns/idlist/5
 ->8-
     details
 -8<-
-== Successful testruns ==
+=== Successful testruns ===
 https://tapper/tapper/testruns/idlist/4
 
-== Unfinished testruns ==
+=== Unfinished testruns ===
 https://tapper/tapper/testruns/idlist/2,3
 ->8-
     }
@@ -187,7 +189,9 @@ Unable to find a test plan instance for this task. Either no test plan was defin
     }
   }
 }
-', 'Expected mail text');
+';
+
+eq_or_diff($mailtext, $expected, 'Expected mail text');
 
 kill 15, $pid;
 

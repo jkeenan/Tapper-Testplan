@@ -9,6 +9,7 @@ author   'AMD OSRC Tapper Team <tapper@amd64.org>';
 license  'perl';
 
 build_requires 'Test::More';
+build_requires 'Test::Differences';
 
 author_requires 'Module::Install::WriteAll';
 
