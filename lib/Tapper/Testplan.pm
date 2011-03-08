@@ -11,7 +11,7 @@ Tapper::Testplan - Tapper - Testplan support
 
 =cut
 
-our $VERSION = '3.000001';
+our $VERSION = '3.000002';
 
 
 =head1 SYNOPSIS
