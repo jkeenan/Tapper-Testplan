@@ -7,7 +7,7 @@ use strict;
 
 =head1 NAME
 
-Tapper::Testplan - Tapper - Testplan support
+Tapper::Testplan - Tapper - Testplan support with TaskJuggler interoperability
 
 =cut
 
