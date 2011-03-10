@@ -38,5 +38,8 @@ requires 'WWW::Mechanize'                 => 0;
 install_script glob('bin/*');
 auto_install;
 
+repository 'git://github.com/amd/Tapper-Testplan.git';
+bugtracker 'http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Tapper-Testplan';
+
 WriteAll;
 
