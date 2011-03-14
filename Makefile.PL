@@ -17,6 +17,7 @@ requires 'Moose' => 0;
 
 requires 'Tapper::Config'                 => "3.000001";
 requires 'Tapper::Model'                  => "3.000001";
+requires 'Tapper::Cmd'                    => "3.000001";
 requires 'CHI'                            => 0;
 requires 'DateTime'                       => 0;
 requires 'DateTime::Format::DateParse'    => 0;
