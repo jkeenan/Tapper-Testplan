@@ -7,11 +7,11 @@ use strict;
 
 =head1 NAME
 
-Tapper::Testplan - Tapper - Testplan support
+Tapper::Testplan - Tapper - Testplan support with TaskJuggler interoperability
 
 =cut
 
-our $VERSION = '3.000001';
+our $VERSION = '3.000004';
 
 
 =head1 SYNOPSIS
