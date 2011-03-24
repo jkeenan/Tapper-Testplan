@@ -11,7 +11,7 @@ Tapper::Testplan - Tapper - Testplan support with TaskJuggler interoperability
 
 =cut
 
-our $VERSION = '3.000004';
+our $VERSION = '3.000005';
 
 
 =head1 SYNOPSIS
