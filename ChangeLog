@@ -1,8 +1,8 @@
-2011-03-28  Steffen Schwigon  <steffen.schwigon@amd.com>
+2011-03-30 Steffen Schwigon <steffen.schwigon@amd.com>
 
 	* v3.0.6
 
-	* utils get rewritten shebang line
+	* rewritable shebang line
 
 2011-03-24 Steffen Schwigon <steffen.schwigon@amd.com>
 
