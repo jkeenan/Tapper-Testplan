@@ -11,6 +11,7 @@ license  'perl';
 build_requires 'Test::More';
 build_requires 'Test::Differences';
 build_requires 'Test::MockModule';
+build_requires 'Tapper::Schema';
 
 author_requires 'Module::Install::WriteAll';
 
