@@ -95,12 +95,13 @@ my $start     = $parser->parse_datetime("this monday");
 my $end       = $parser->parse_datetime("next monday");
 $start->set_formatter($formatter);
 $end->set_formatter($formatter);
+my $end_time  = DateTime::Format::DateParse->parse_datetime('3011-06-30-00:00', 'Europe/Berlin')->set_formatter($formatter);
 
 my $expected = "timesheet tapper $start - $end {
 ".
-'  task osrc.kernel.barracuda.server.kvm.svm_asid.tapper.SLES_11SP2 {
+qq(  task osrc.kernel.barracuda.server.kvm.svm_asid.tapper.SLES_11SP2 {
     work 0%
-    end 3011-05-04-00:00-+0100
+    end $end_time
     status red "KVM: Support Flush by ASID" {
     summary
 -8<-
@@ -114,7 +115,7 @@ Unable to find a test plan instance for this task. Either no test plan was defin
   }
   task osrc.kernel.barracuda.server.kvm.svm_asid.tapper.LK_39 {
     work 0%
-    end 3011-05-04-00:00-+0100
+    end $end_time
     status red "KVM: Support Flush by ASID" {
     summary
 -8<-
@@ -129,7 +130,7 @@ https://tapper/tapper/testruns/idlist/1
   }
   task only.to.get.work.fractions.task1 {
     work 0%
-    end 3011-06-30-00:00-+0100
+    end $end_time
     status red "KVM: Support Decode Assists" {
     summary
 -8<-
@@ -143,7 +144,7 @@ Unable to find a test plan instance for this task. Either no test plan was defin
   }
   task osrc.kernel.barracuda.server.kvm.svm_decode.tapper.SLES_11SP2 {
     work 0%
-    end 3011-06-30-00:00-+0100
+    end $end_time
     status green "KVM: Support Decode Assists" {
     summary
 -8<-
@@ -158,7 +159,7 @@ https://tapper/tapper/testruns/idlist/5
   }
   task osrc.kernel.barracuda.server.kvm.svm_decode.tapper.LK_38 {
     work 0%
-    end 3011-06-30-00:00-+0100
+    end $end_time
     status yellow "KVM: Support Decode Assists" {
     summary
 -8<-
@@ -176,7 +177,7 @@ https://tapper/tapper/testruns/idlist/2,3
   }
   task only.to.get.work.fractions.task1 {
     work 0%
-    end 3011-06-30-00:00-+0100
+    end $end_time
     status red "KVM: Support Decode Assists" {
     summary
 -8<-
@@ -189,7 +190,7 @@ Unable to find a test plan instance for this task. Either no test plan was defin
     }
   }
 }
-';
+);
 
 eq_or_diff($mailtext, $expected, 'Expected mail text');
 
