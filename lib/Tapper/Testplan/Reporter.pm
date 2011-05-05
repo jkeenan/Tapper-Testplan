@@ -7,6 +7,8 @@ use 5.010;
 use Moose;
 use Tapper::Config;
 use Tapper::Model 'model';
+use Hash::Merge 'merge';
+use Tapper::Testplan::Utils;
 
 extends 'Tapper::Testplan';
 
@@ -24,6 +26,7 @@ Tapper::Testplan::Reporter - Main module for testplan reporting!
 
 =head1 FUNCTIONS
 
+
 =head2 run
 
 =cut
@@ -32,44 +35,18 @@ sub run
 {
         my ($self)    = @_;
         my $plugin    = Tapper::Config->subconfig->{testplans}{reporter}{plugin}{name} || 'Taskjuggler';
-        my $now       = time();
         my $intervall = Tapper::Config->subconfig->{testplans}{reporter}{interval};
 
         eval "use Tapper::Testplan::Plugins::$plugin";
         my $reporter = "Tapper::Testplan::Plugins::$plugin"->new(cfg => Tapper::Config->subconfig->{testplans}{reporter}{plugin});
+        my $util     = Tapper::Testplan::Utils->new();
 
           my @reports;
  TASK:
         foreach my $task ($reporter->get_tasks()) {
 
-                my $path  = $task->{path};
-
-
-                my $instance = model('TestrunDB')->resultset('TestplanInstance')->search
-                  ({ path => $path,
-                     created_at => { '>=' => $now - $intervall }},{order_by => {-desc => 'id'}})->first;
-
-                if ($instance) {
-                        my @testrun_ids = map {$_->id } $instance->testruns;
-                        my $stats   = model('ReportsDB')->resultset('ReportgroupTestrunStats')->search({testrun_id => {-in => [@testrun_ids]}});
-                        my $success = 0;
-                        if ($stats->count) {
-                                map { $success += $_->success_ratio } $stats->all;
-                                $task->{success} = $success / $stats->count;
-                        } else {
-                                $task->{success} = 0;
-                        }
-                        $task->{tests_all}       = [ $instance->testruns->all ];
-                        $task->{tests_scheduled} = [ grep {$_->testrun_scheduling->status eq 'schedule'} $instance->testruns->all ];
-                        $task->{tests_running}   = [ grep {$_->testrun_scheduling->status eq 'running'}  $instance->testruns->all ];
-                        $task->{tests_finished}  = [ grep {$_->testrun_scheduling->status eq 'finished'} $instance->testruns->all ];
-                } else {
-                        $task->{success} = 0;
-                        $task->{tests_all}       = [];
-                        $task->{tests_scheduled} = [];
-                        $task->{tests_running}   = [];
-                        $task->{tests_finished}  = [];
-                }
+                my $task_success = $util->get_testplan_success($task->{path}, $intervall);
+                $task = merge($task, $task_success);
                 push @reports, $task;
         }
         $reporter->send_reports(@reports);

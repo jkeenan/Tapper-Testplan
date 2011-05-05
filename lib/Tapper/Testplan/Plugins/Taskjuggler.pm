@@ -18,6 +18,8 @@ use Moose;
 use Template;
 use Text::CSV::Slurp;
 use WWW::Mechanize;
+use Tapper::Model 'model';
+use Tapper::Testplan::Utils;
 
 
 # extends 'Tapper::Testplan::Plugins';
@@ -63,13 +65,121 @@ sub fetch_data
                                                   binary   => 1,
                                                   sep_char => ";"
                                                  );
+                foreach my $task (@{$data || [] }) {
+                        $task->{Start} = $task->{Start}                               ?
+                          DateTime::Format::DateParse->parse_datetime($task->{Start}) :
+                                    DateTime::Infinite::Past->new();
+                        $task->{End}   = $task->{End}                                 ?
+                          DateTime::Format::DateParse->parse_datetime($task->{End})   :
+                                    DateTime::Infinite::Future->new();
+                }
+
                 my $platform = {name  => $platform_name,
                                 tasks => $data};
                 push @platforms, $platform;
         }
         $cache->set( 'platforms', \@platforms, $self->cfg->{cachetime} );
+
         return \@platforms;
 }
+
+
+=head2 get_testplan_color
+
+Get a color code for the success of this test plan. The returned color
+codes have the following meaning.
+'green'  - successfully tested
+'yellow' - not all tests run but not errors yet
+'red'    - at least one test failed
+'black'  - no test defined
+
+@param hash ref - success overview
+
+@return string - 'green', 'yellow', 'red', 'black'
+
+=cut
+
+sub get_testplan_color
+{
+        my ($self, $task) = @_;
+
+        if ( not (ref $task eq 'HASH'       and
+                  defined $task->{tests_all} and
+                  defined $task->{tests_finished}) ) {
+                return 'black';
+        }
+        # no tests for task defined
+        elsif (not @{$task->{tests_all}}) {
+                return 'black';
+        }
+        # at least on test has failed
+        elsif ($task->{success} < 100) {
+                return 'red';
+        }
+        # no failed test, but not all finished yet
+        elsif (@{$task->{test_all}} >
+                 @{$task->{test_finished}}) {
+                return 'yellow';
+        }
+        # no failed test and all finished
+        else {
+                return 'green';
+        }
+}
+
+
+
+=head2
+
+Prepare a task overview for WebGUI.
+
+@optparam hash ref - contains "start" and "end" DateTime object
+
+@return array ref  - contains hash refs
+
+=cut
+
+sub prepare_task_data
+{
+        my ($self, $times) = @_;
+
+        my $now       = DateTime->now();
+        my @reports   = @{$self->fetch_data() || []};
+        my $interval;
+        my $util     = Tapper::Testplan::Utils->new();
+
+        foreach my $platform (@reports) {
+        TASK:
+                foreach my $task (@{$platform->{tasks} || [] }) {
+                        my $start_time = $task->{Start};       delete $task->{Start};
+                        my $end_time   = $task->{End};         delete $task->{End};
+                        my $task_name  = $task->{'Task Name'}; delete $task->{'Task Name'};
+
+
+                        foreach my $subtask (keys %$task) {
+                                if ($task->{$subtask}) {
+
+                                        my $db_path = $task->{$subtask};
+                                        # we need more information on subtask hashes than TJ provides
+                                        $task->{$subtask} = { name => $db_path };
+
+                                        $db_path =~ tr|.|/|;
+                                        my $task_success         = $util->get_testplan_success($db_path, $interval);
+
+                                        $task->{$subtask}{color} = $self->get_testplan_color($task_success);
+                                }
+                        }
+
+                        $platform->{vendors} = [ keys %$task ] unless $platform->{vendors};
+                        $task->{start}       = $start_time;
+                        $task->{end}         = $end_time;
+                        $task->{name}        = $task_name;
+
+                }
+        }
+        return \@reports;
+}
+
 
 =head2 get_platforms
 
@@ -97,13 +207,10 @@ sub get_tasks
         foreach my $platform (@{$self->fetch_data() || []}) {
         TASK:
                 foreach my $task (@{$platform->{tasks} || [] }) {
-                        my $start_time = $task->{Start}                               ?
-                          DateTime::Format::DateParse->parse_datetime($task->{Start}) :
-                                    DateTime::Infinite::Past->new();
-                        my $end_time   = $task->{End}                                 ?
-                          DateTime::Format::DateParse->parse_datetime($task->{End})   :
-                                    DateTime::Infinite::Future->new();
-                        my $task_name  = $task->{'Task Name'};
+                        my $start_time = $task->{Start};       delete $task->{Start};
+                        my $end_time   = $task->{End};         delete $task->{End};
+                        my $task_name  = $task->{'Task Name'}; delete $task->{'Task Name'};
+
                         if ($times and ref $times eq 'HASH') {
                                 next TASK unless $start_time <= $times->{start} and
                                   $end_time >= $times->{end};
@@ -112,9 +219,6 @@ sub get_tasks
                                   $end_time > ($now->subtract(weeks => 1));
                         }
 
-                        delete $task->{Start};
-                        delete $task->{End};
-                        delete $task->{'Task Name'};
 
                 SUBTASK:
                         foreach my $subtask (keys %{$task || {}}) {
