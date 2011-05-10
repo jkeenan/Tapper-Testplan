@@ -63,6 +63,7 @@ sub get_testplan_success
                 } else {
                         $task->{success} = 0;
                 }
+                $task->{testplan}        = $instance;
                 $task->{tests_all}       = [ $instance->testruns->all ];
                 $task->{tests_scheduled} = [ grep {$_->testrun_scheduling->status eq 'schedule'} $instance->testruns->all ];
                 $task->{tests_running}   = [ grep {$_->testrun_scheduling->status eq 'running'}  $instance->testruns->all ];

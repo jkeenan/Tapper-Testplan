@@ -167,6 +167,7 @@ sub prepare_task_data
                                         my $task_success         = $util->get_testplan_success($db_path, $interval);
 
                                         $task->{$subtask}{color} = $self->get_testplan_color($task_success);
+                                        $task->{$subtask}{id}    = $task->{testplan} ? $task->{testplan}->id : 'undef';
                                 }
                         }
 
