@@ -44,6 +44,9 @@ Tapper::Testplan::Reporter::Plugins::Taskjuggler - Main module for testplan repo
 
 Get the data about platforms and data from cache or remote.
 
+@return success - array ref containing platform information
+@return error   - error string
+
 =cut
 
 sub fetch_data
@@ -55,13 +58,22 @@ sub fetch_data
         my @platforms;
         my $platforms = $cache->get( 'reports' );
         return $platforms if $platforms;
-        my $mech = WWW::Mechanize->new();
-        $mech->get($self->cfg->{url});
+
+        my $mech = WWW::Mechanize->new(autocheck => 0);
+        my $response = $mech->get($self->cfg->{url});
+        return $response->status_line if not $response->is_success;
+
+
         my @platform_files = $mech->find_all_links( text_regex => qr/Tapper_/i );
+ FILE:
         foreach my $file (@platform_files) {
                 my ($platform_name) = $file->url =~ m/Tapper_(.+)_Matrix/;
                 $platform_name    =~ tr/_/-/;
-                my $data = Text::CSV::Slurp->load(string     => $mech->get($file->url)->content(),
+
+                my $file_response = $mech->get($file->url);
+                next FILE unless $file_response->is_success;
+
+                my $data = Text::CSV::Slurp->load(string     => $file_response->content(),
                                                   binary   => 1,
                                                   sep_char => ";"
                                                  );
@@ -135,7 +147,8 @@ Prepare a task overview for WebGUI.
 
 @optparam hash ref - contains "start" and "end" DateTime object
 
-@return array ref  - contains hash refs
+@return success - array ref  - contains hash refs
+@return error   - error string
 
 =cut
 
@@ -144,7 +157,10 @@ sub prepare_task_data
         my ($self, $times) = @_;
 
         my $now       = DateTime->now();
-        my @reports   = @{$self->fetch_data() || []};
+        my $data      = $self->fetch_data();
+        return $data if not ref $data eq 'ARRAY';
+
+        my @reports   = @$data;
         my $interval;
         my $util     = Tapper::Testplan::Utils->new();
 
@@ -167,6 +183,7 @@ sub prepare_task_data
                                         my $task_success         = $util->get_testplan_success($db_path, $interval);
 
                                         $task->{$subtask}{color} = $self->get_testplan_color($task_success);
+                                        $task->{$subtask}{id}    = $task->{testplan} ? $task->{testplan}->id : 'undef';
                                 }
                         }
 
