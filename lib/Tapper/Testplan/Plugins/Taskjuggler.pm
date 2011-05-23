@@ -56,6 +56,7 @@ sub fetch_data
         my $platforms = $cache->get( 'reports' );
         return $platforms if $platforms;
         my $mech = WWW::Mechanize->new();
+        $mech->ssl_opts( verify_hostname => 0 );
         $mech->get($self->cfg->{url});
         my @platform_files = $mech->find_all_links( text_regex => qr/Tapper_/i );
         foreach my $file (@platform_files) {
@@ -205,6 +206,9 @@ sub get_tasks
 
         my $now       = DateTime->now();
         my @reports;
+        my $last_week  = DateTime->now();
+        $last_week->subtract(weeks => 1);
+
         foreach my $platform (@{$self->fetch_data() || []}) {
         TASK:
                 foreach my $task (@{$platform->{tasks} || [] }) {
@@ -217,7 +221,7 @@ sub get_tasks
                                   $end_time >= $times->{end};
                         } else {
                                 next TASK unless $start_time < $now and
-                                  $end_time > ($now->subtract(weeks => 1));
+                                  $end_time > ($last_week);
                         }
 
 
