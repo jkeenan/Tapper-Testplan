@@ -115,13 +115,13 @@ sub get_testplan_color
         elsif (not @{$task->{tests_all}}) {
                 return 'black';
         }
-        # at least on test has failed
-        elsif ($task->{success} < 100) {
+        # at least on test was already executed and has failed
+        elsif ($task->{success} < 100 and @{$task->{tests_finished}}) {
                 return 'red';
         }
         # no failed test, but not all finished yet
-        elsif (@{$task->{test_all}} >
-                 @{$task->{test_finished}}) {
+        elsif (@{$task->{tests_all}} >
+                 @{$task->{tests_finished}}) {
                 return 'yellow';
         }
         # no failed test and all finished
