@@ -44,6 +44,8 @@ Tapper::Testplan::Reporter::Plugins::Taskjuggler - Main module for testplan repo
 
 Get the data about platforms and data from cache or remote.
 
+@return array - data about all platforms
+
 =cut
 
 sub fetch_data
@@ -159,7 +161,6 @@ sub prepare_task_data
 
                         foreach my $subtask (keys %$task) {
                                 if ($task->{$subtask}) {
-
                                         my $db_path = $task->{$subtask};
                                         # we need more information on subtask hashes than TJ provides
                                         $task->{$subtask} = { name => $db_path };
@@ -168,7 +169,7 @@ sub prepare_task_data
                                         my $task_success         = $util->get_testplan_success($db_path, $interval);
 
                                         $task->{$subtask}{color} = $self->get_testplan_color($task_success);
-                                        $task->{$subtask}{id}    = $task->{testplan} ? $task->{testplan}->id : 'undef';
+                                        $task->{$subtask}{id}    = $task_success->{testplan} ? $task_success->{testplan}->id : 'undef';
                                 }
                         }
 
