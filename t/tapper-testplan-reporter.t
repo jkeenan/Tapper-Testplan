@@ -123,8 +123,8 @@ Success ratio 75%
 ->8-
     details
 -8<-
-=== All testruns ===
-https://tapper/tapper/testruns/idlist/1
+=== Link to testplan ===
+[https://tapper/tapper/testplan/id/1 https://tapper/tapper/testplan/id/1]
 ->8-
     }
   }
@@ -152,8 +152,8 @@ All tests successful for this test plan
 ->8-
     details
 -8<-
-=== Successful testruns ===
-https://tapper/tapper/testruns/idlist/5
+=== Link to testplan ===
+[https://tapper/tapper/testplan/id/3 https://tapper/tapper/testplan/id/3]
 ->8-
     }
   }
@@ -167,11 +167,8 @@ https://tapper/tapper/testruns/idlist/5
 ->8-
     details
 -8<-
-=== Successful testruns ===
-https://tapper/tapper/testruns/idlist/4
-
-=== Unfinished testruns ===
-https://tapper/tapper/testruns/idlist/2,3
+=== Link to testplan ===
+[https://tapper/tapper/testplan/id/2 https://tapper/tapper/testplan/id/2]
 ->8-
     }
   }
