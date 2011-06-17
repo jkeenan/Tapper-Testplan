@@ -298,11 +298,6 @@ sub send_reports
                 $report->{work} = sprintf ("%.2f",100/(int @reports));
                 $report->{headline} = $report->{name};
 
-                if ($num == $#reports) {
-                        $report->{work} =  sprintf ("%.2f", 100 - $worksum);
-                } else {
-                        $worksum += $report->{work};
-                }
                 if (@{$report->{tests_all}} < 1) {
                         $report->{status}   = 'red';
                         $report->{summary}  = "No tests defined";
