@@ -306,10 +306,7 @@ sub send_reports
                         $report->{details} .= "Either no test plan was defined or the testplan generator skipped it for some reason";
                         next REPORT;
                 }
-                if ($report->{success} < 100) {
-                        $report->{status}  = 'red';
-                        $report->{summary} = 'Success ratio '.$report->{success}.'%';
-                } elsif (@{$report->{tests_all}} > @{$report->{tests_finished}}) {
+                if (@{$report->{tests_all}} > @{$report->{tests_finished}}) {
                         $report->{status}   = 'yellow';
                         $report->{summary} = sprintf ("%.1f", (@{$report->{tests_finished}}/@{$report->{tests_all}})*100);
                         $report->{summary}.= "% successful (";
@@ -324,6 +321,9 @@ sub send_reports
                         $report->{summary}.= int @{$report->{tests_all}};
                         $report->{summary}.= ").";
 
+                } elsif ($report->{success} < 100) {
+                        $report->{status}  = 'red';
+                        $report->{summary} = 'Success ratio '.$report->{success}.'%';
                 } else {
                         $report->{status}   = 'green';
                         $report->{summary} = "All tests successful for this test plan";
