@@ -261,6 +261,7 @@ sub send_mail
         my $email = Email::Simple->create(
                                           header => [
                                                      To      => $self->cfg->{mailto},
+                                                     Cc      => $self->cfg->{mailcc},
                                                      From    => $self->cfg->{mailfrom},
                                                      Subject => "Test plans for ".DateTime->now,
                                                     ],
