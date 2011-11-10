@@ -41,7 +41,7 @@ sub run
         my $reporter = "Tapper::Testplan::Plugins::$plugin"->new(cfg => Tapper::Config->subconfig->{testplans}{reporter}{plugin});
         my $util     = Tapper::Testplan::Utils->new();
 
-          my @reports;
+        my @reports;
  TASK:
         foreach my $task ($reporter->get_tasks()) {
 

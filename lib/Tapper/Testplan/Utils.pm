@@ -22,6 +22,7 @@ Reporter or Generator) and plugin modules (like Taskjuggler).
     my $foo = Tapper::Testplan::Utils->new();
 
 =head1 FUNCTIONS
+
 =head2 get_testplan_success
 
 Get success overview for a task given by path. An optional second

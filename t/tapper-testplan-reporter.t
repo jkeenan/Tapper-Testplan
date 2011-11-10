@@ -90,12 +90,12 @@ eval {
 fail($@) if $@;
 
 my $parser    = DateTime::Format::Natural->new(time_zone => 'local');
-my $formatter = DateTime::Format::Strptime->new(pattern     => '%Y-%m-%d-00:00-%z');
+my $formatter = DateTime::Format::Strptime->new(pattern     => '%Y-%m-%d-00:00-%z', time_zone => 'local');
 my $start     = $parser->parse_datetime("this monday");
 my $end       = $parser->parse_datetime("next monday");
 $start->set_formatter($formatter);
 $end->set_formatter($formatter);
-my $end_time  = DateTime::Format::DateParse->parse_datetime('3011-06-30-00:00', 'local')->set_formatter($formatter);
+my $end_time  = DateTime::Format::DateParse->parse_datetime('3011-06-30-00:00')->set_formatter($formatter);
 
 my $expected = "timesheet tapper $start - $end {
 ".

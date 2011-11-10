@@ -290,7 +290,7 @@ sub send_reports
 
         my $mail_template = slurp module_file('Tapper::Testplan::Plugins::Taskjuggler', 'mail.template');
         my $parser    = DateTime::Format::Natural->new(time_zone => 'local');
-        my $formatter = DateTime::Format::Strptime->new(pattern     => '%Y-%m-%d-00:00-%z');
+        my $formatter = DateTime::Format::Strptime->new(pattern     => '%Y-%m-%d-00:00-%z', time_zone => 'local');
  REPORT:
         for (my $num=0; $num < int @reports; $num++) { # need to know when we reached the last report
                 my $report = $reports[$num];
