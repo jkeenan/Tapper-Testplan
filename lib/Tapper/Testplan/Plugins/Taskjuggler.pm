@@ -64,11 +64,11 @@ sub fetch_data
         foreach my $file (@platform_files) {
                 my ($platform_name) = $file->url =~ m/Tapper_(.+)_Matrix/;
                 $platform_name    =~ tr/_/-/;
-                my $data = Text::CSV::Slurp->load(string     => $mech->get($file->url)->content(),
+                my $tasks = Text::CSV::Slurp->load(string     => $mech->get($file->url)->content(),
                                                   binary   => 1,
                                                   sep_char => ";"
                                                  );
-                foreach my $task (@{$data || [] }) {
+                foreach my $task (@{$tasks || [] }) {
                         $task->{Start} = $task->{Start}                               ?
                           DateTime::Format::DateParse->parse_datetime($task->{Start}) :
                                     DateTime::Infinite::Past->new();
@@ -78,7 +78,7 @@ sub fetch_data
                 }
 
                 my $platform = {name  => $platform_name,
-                                tasks => $data};
+                                tasks => $tasks};
                 push @platforms, $platform;
         }
         $cache->set( 'platforms', \@platforms, $self->cfg->{cachetime} );
