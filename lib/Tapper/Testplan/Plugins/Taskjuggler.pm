@@ -221,8 +221,7 @@ sub get_tasks
                                 next TASK unless $start_time <= $times->{start} and
                                   $end_time >= $times->{end};
                         } else {
-                                next TASK unless $start_time < $now and
-                                  $end_time > ($last_week);
+                                next TASK unless $start_time < $now;
                         }
 
 
