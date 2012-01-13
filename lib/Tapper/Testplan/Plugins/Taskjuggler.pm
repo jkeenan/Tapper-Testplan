@@ -218,8 +218,8 @@ sub get_tasks
                         my $task_name  = $task->{'Task Name'}; delete $task->{'Task Name'};
 
                         if ($times and ref $times eq 'HASH') {
-                                next TASK if ( $start_time > $times->{start} or
-                                  $end_time < $times->{end});
+                                next TASK if ( $start_time > $times->{end} or
+                                  $end_time < $times->{start});
                         } else {
                                 next TASK if $start_time > $now;
                         }
