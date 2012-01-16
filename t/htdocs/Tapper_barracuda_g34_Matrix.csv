@@ -1,3 +1,4 @@
 "Task Name";"Start";"End";"LK_38";"LK_39";"Xen4_2";"Xen4_3";"SLES_10SP4";"SLES_11SP2";"RHEL_5_7";"RHEL_6_1";"RHEL_6_2"
 "KVM: Support Flush by ASID";"2010-03-16";"3011-06-30";;"osrc.kernel.barracuda.server.kvm.svm_asid.tapper.LK_39";;;;"osrc.kernel.barracuda.server.kvm.svm_asid.tapper.SLES_11SP2";;;
 "KVM: Support Decode Assists";"2010-05-19";"3011-06-30";"osrc.kernel.barracuda.server.kvm.svm_decode.tapper.LK_38";;;;;"osrc.kernel.barracuda.server.kvm.svm_decode.tapper.SLES_11SP2";"only.to.get.work.fractions.task1";"only.to.get.work.fractions.task1";
+"Red task already finished";1960-05-19;1960-05-20;"osrc.kernel.barracuda.server.kvm.red_task.tapper.LK_38";;;;;"osrc.kernel.barracuda.server.kvm.red_task.tapper.SLES_11SP2";;;

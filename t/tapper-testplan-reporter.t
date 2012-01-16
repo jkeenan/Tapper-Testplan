@@ -25,6 +25,8 @@ if ($ENV{HARNESS_IS_VERBOSE}) {
         diag 'osrc.kernel.barracuda.server.kvm.svm_asid.tapper.SLES_11SP2   - success < 100%   #';
         diag 'osrc.kernel.barracuda.server.kvm.svm_decode.tapper.LK_38      - unfinished tests #';
         diag 'osrc.kernel.barracuda.server.kvm.svm_decode.tapper.SLES_11SP2 - all green        #';
+        diag 'osrc.kernel.barracuda.server.kvm.red_task.tapper.SLES_11SP2   - red but finished #';
+        diag 'osrc.kernel.barracuda.server.kvm.red_task.tapper.LK_38        - red but finished #';
         diag '                                                                                 #';
         diag '################################################################################ #';
 }
@@ -96,6 +98,11 @@ my $end       = $parser->parse_datetime("next monday");
 $start->set_formatter($formatter);
 $end->set_formatter($formatter);
 my $end_time  = DateTime::Format::DateParse->parse_datetime('3011-06-30-00:00')->set_formatter($formatter);
+my $end_green = $parser->parse_datetime('next monday at 0:00')->set_formatter($formatter);
+$end_green->subtract(hours => 1);
+my $end_red = $parser->parse_datetime('next monday at 0:00')->set_formatter($formatter);
+$end_red->add(weeks => 1)->subtract(hours => 1);
+
 
 my $expected = "timesheet tapper $start - $end {
 ".
@@ -144,7 +151,7 @@ Unable to find a test plan instance for this task. Either no test plan was defin
   }
   task osrc.kernel.barracuda.server.kvm.svm_decode.tapper.SLES_11SP2 {
     work 0%
-    end $end_time
+    end $end_green
     status green "KVM: Support Decode Assists" {
     summary
 -8<-
@@ -176,6 +183,34 @@ All tests successful for this test plan
     work 0%
     end $end_time
     status red "KVM: Support Decode Assists" {
+    summary
+-8<-
+No tests defined
+->8-
+    details
+-8<-
+Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+->8-
+    }
+  }
+  task osrc.kernel.barracuda.server.kvm.red_task.tapper.SLES_11SP2 {
+    work 0%
+    end $end_red
+    status red "Red task already finished" {
+    summary
+-8<-
+No tests defined
+->8-
+    details
+-8<-
+Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+->8-
+    }
+  }
+  task osrc.kernel.barracuda.server.kvm.red_task.tapper.LK_38 {
+    work 0%
+    end $end_red
+    status red "Red task already finished" {
     summary
 -8<-
 No tests defined
