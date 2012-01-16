@@ -222,6 +222,7 @@ sub get_tasks
                                   $end_time < $times->{start});
                         } else {
                                 next TASK if $start_time > $now;
+ ;
                         }
 
 
@@ -270,6 +271,50 @@ sub send_mail
         return;
 }
 
+=head2 choose_report
+
+Choose which tasks are actually sent.
+Successful reports are only sent if they were not finished as the start of week.
+They are only checked because may have become red and in this case need to be reopened.
+Unsuccessful report are always sent and can not end this week. If needed the end date
+is adapted accordingly.
+
+@param hash ref - report to choose
+@param array    - reports already chosen for sending
+
+@return success - new list of reports to sent
+@return error   - exception
+
+=cut
+
+sub choose_report
+{
+        my ($self, $report, @reports_to_send) = @_;
+
+        my $parser        = DateTime::Format::Natural->new(time_zone => 'local');
+        my $formatter     = DateTime::Format::Strptime->new(pattern     => '%Y-%m-%d-00:00-%z', time_zone => 'local');
+        my $start_of_week = $parser->parse_datetime("this monday at 0:00")->set_formatter($formatter);
+        my $end_of_week   = $parser->parse_datetime("next monday at 0:00")->set_formatter($formatter);
+
+        if ($report->{status} eq 'red' or $report->{status} eq 'yellow') {
+                push @reports_to_send, $report;
+                if ($report->{end} < $end_of_week) {
+                        $report->{work_end} = $end_of_week->add(weeks => 1)->subtract(hours => 1);
+                }
+        } elsif ($report->{status} eq 'green') {
+                if ($report->{end} > $end_of_week) {
+                        $report->{work_end} = $end_of_week;
+                        $report->{work_end}->subtract(hours => 1);
+                }
+                if ($report->{work_end} > $start_of_week) {
+                        push @reports_to_send, $report;
+                }
+        } else {
+                die "Unknown report status '",$report->status,"'";
+        }
+        return @reports_to_send;
+}
+
 =head2 send_reports
 
 Send a report based on the data received as parameter.
@@ -277,7 +322,7 @@ Send a report based on the data received as parameter.
 @param list of hash refs - contains reports
 
 @return success - 0
-@return error   - error string
+@return error   - exception
 
 =cut
 
@@ -286,10 +331,12 @@ sub send_reports
         my ($self, @reports) = @_;
         my $worksum = 0;
         my $base_url = $self->cfg->{base_url};
+        my @reports_to_send;
 
         my $mail_template = slurp module_file('Tapper::Testplan::Plugins::Taskjuggler', 'mail.template');
-        my $parser    = DateTime::Format::Natural->new(time_zone => 'local');
-        my $formatter = DateTime::Format::Strptime->new(pattern     => '%Y-%m-%d-00:00-%z', time_zone => 'local');
+        my $parser        = DateTime::Format::Natural->new(time_zone => 'local');
+        my $formatter     = DateTime::Format::Strptime->new(pattern     => '%Y-%m-%d-00:00-%z', time_zone => 'local');
+
  REPORT:
         for (my $num=0; $num < int @reports; $num++) { # need to know when we reached the last report
                 my $report = $reports[$num];
@@ -303,6 +350,7 @@ sub send_reports
                         $report->{summary}  = "No tests defined";
                         $report->{details} .= "Unable to find a test plan instance for this task. ";
                         $report->{details} .= "Either no test plan was defined or the testplan generator skipped it for some reason";
+                        @reports_to_send    = $self->choose_report($report, @reports_to_send);
                         next REPORT;
                 }
                 if (@{$report->{tests_all}} > @{$report->{tests_finished}}) {
@@ -335,15 +383,18 @@ sub send_reports
                         $report->{details}.= "No testplan instance found";
                 }
 
-
+                @reports_to_send = $self->choose_report($report, @reports_to_send);
         }
+
+
         my $macros = { start_date => $parser->parse_datetime("this monday at 0:00")->set_formatter($formatter),
                        end_date   => $parser->parse_datetime("next monday at 0:00")->set_formatter($formatter),
-                       reports    => [ @reports ] };
+                       reports    => [ @reports_to_send ] };
         my $tt = Template->new();
         my $ttapplied;
         $tt->process(\$mail_template, $macros, \$ttapplied) || die $tt->error();
         $self->send_mail($ttapplied);
+        return 0;
 }
 
 =head1 AUTHOR
