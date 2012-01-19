@@ -116,7 +116,7 @@ No tests defined
 ->8-
     details
 -8<-
-Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+Unable to find a test plan instance for this task.
 ->8-
     }
   }
@@ -145,7 +145,7 @@ No tests defined
 ->8-
     details
 -8<-
-Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+Unable to find a test plan instance for this task.
 ->8-
     }
   }
@@ -189,7 +189,7 @@ No tests defined
 ->8-
     details
 -8<-
-Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+Unable to find a test plan instance for this task.
 ->8-
     }
   }
@@ -203,7 +203,7 @@ No tests defined
 ->8-
     details
 -8<-
-Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+Unable to find a test plan instance for this task.
 ->8-
     }
   }
@@ -217,7 +217,7 @@ No tests defined
 ->8-
     details
 -8<-
-Unable to find a test plan instance for this task. Either no test plan was defined or the testplan generator skipped it for some reason
+Unable to find a test plan instance for this task.
 ->8-
     }
   }
