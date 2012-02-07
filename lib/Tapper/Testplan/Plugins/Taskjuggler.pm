@@ -346,7 +346,7 @@ sub send_reports
                 $report->{headline} = $report->{name};
 
                 if (@{$report->{tests_all}} < 1) {
-                        $report->{status}   = 'red';
+                        $report->{status}   = 'yellow';
                         $report->{summary}  = "No tests defined";
                         $report->{details} .= "Unable to find a test plan instance for this task.";
                         @reports_to_send    = $self->choose_report($report, @reports_to_send);
