@@ -17,10 +17,9 @@ use File::Slurp 'slurp';
 use Moose;
 use Template;
 use Text::CSV::Slurp;
-use WWW::Mechanize;
 use Tapper::Model 'model';
 use Tapper::Testplan::Utils;
-
+use File::Temp 'tempdir';
 
 # extends 'Tapper::Testplan::Plugins';
 
@@ -40,6 +39,60 @@ Tapper::Testplan::Reporter::Plugins::Taskjuggler - Main module for testplan repo
 
 =head1 FUNCTIONS
 
+=head2 get_platform_files
+
+Get the list of platforms. Each platform is a hash ref. The hash
+contains:
+* name - the name of the platform
+* content - data about tasks on this platform as CVS
+
+@return array - list of platform hashes
+
+=cut
+
+# sub get_platforms
+# {
+#         my ($self) = @_;
+#         my $mech = WWW::Mechanize->new();
+#         $mech->ssl_opts( verify_hostname => 0 );
+#         $mech->get($self->cfg->{url});
+#         my @platform_files = $mech->find_all_links( text_regex => qr/Tapper_/i );
+#         my @platforms;
+#         foreach my $file (@platform_files) {
+#                 my ($platform_name) = $file->url =~ m/Tapper_(.+)_Matrix/;
+#                 $platform_name      =~ tr/_/-/;
+#                 my $platform        = { name => $platform_name,
+#                                         content => $mech->get($file->url)->content(),
+#                                       };
+#                 push @platforms, $platform;
+#         }
+#         return @platforms;
+# }
+
+sub get_platforms
+{
+        my ($self) = @_;
+        my $tempdir = tempdir( CLEANUP => 1 );
+        system("rsync -a  tapper\@osrc:/var/www/htdocs/pub/schedules/Tapper_* $tempdir/"); ;
+        my @filenames = qx(find $tempdir/ -type f -mtime -7);
+        my @platforms;
+
+        foreach my $file (@filenames) {
+                chomp $file;
+                my ($platform_name) = $file =~ m/Tapper_(.+)_Matrix/;
+                $platform_name      =~ tr/_/-/;
+                open my $fh, '<', $file or die "Can not open $file:$!";
+                my $content = do { local $/; <$fh> };
+                my $platform        = { name => $platform_name,
+                                        content => $content,
+                                      };
+                close $fh;
+                push @platforms, $platform;
+        }
+        return @platforms;
+}
+
+
 =head2 fetch_data
 
 Get the data about platforms and data from cache or remote.
@@ -57,14 +110,11 @@ sub fetch_data
         my @platforms;
         my $platforms = $cache->get( 'reports' );
         return $platforms if $platforms;
-        my $mech = WWW::Mechanize->new();
-        $mech->ssl_opts( verify_hostname => 0 );
-        $mech->get($self->cfg->{url});
-        my @platform_files = $mech->find_all_links( text_regex => qr/Tapper_/i );
-        foreach my $file (@platform_files) {
-                my ($platform_name) = $file->url =~ m/Tapper_(.+)_Matrix/;
-                $platform_name    =~ tr/_/-/;
-                my $tasks = Text::CSV::Slurp->load(string     => $mech->get($file->url)->content(),
+
+        my @platforms_cvs = $self->get_platforms();
+
+        foreach my $platform_cvs (@platforms_cvs) {
+                my $tasks = Text::CSV::Slurp->load(string  => $platform_cvs->{content},
                                                   binary   => 1,
                                                   sep_char => ";"
                                                  );
@@ -77,7 +127,7 @@ sub fetch_data
                                     DateTime::Infinite::Future->new();
                 }
 
-                my $platform = {name  => $platform_name,
+                my $platform = {name  => $platform_cvs->{name},
                                 tasks => $tasks};
                 push @platforms, $platform;
         }
