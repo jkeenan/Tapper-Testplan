@@ -109,7 +109,7 @@ my $expected = "timesheet tapper $start - $end {
 qq(  task osrc.kernel.barracuda.server.kvm.svm_asid.tapper.SLES_11SP2 {
     work 0%
     end $end_time
-    status red "KVM: Support Flush by ASID" {
+    status yellow "KVM: Support Flush by ASID" {
     summary
 -8<-
 No tests defined
@@ -138,7 +138,7 @@ Success ratio 75%
   task only.to.get.work.fractions.task1 {
     work 0%
     end $end_time
-    status red "KVM: Support Decode Assists" {
+    status yellow "KVM: Support Decode Assists" {
     summary
 -8<-
 No tests defined
@@ -182,7 +182,7 @@ All tests successful for this test plan
   task only.to.get.work.fractions.task1 {
     work 0%
     end $end_time
-    status red "KVM: Support Decode Assists" {
+    status yellow "KVM: Support Decode Assists" {
     summary
 -8<-
 No tests defined
@@ -196,7 +196,7 @@ Unable to find a test plan instance for this task.
   task osrc.kernel.barracuda.server.kvm.red_task.tapper.SLES_11SP2 {
     work 0%
     end $end_red
-    status red "Red task already finished" {
+    status yellow "Red task already finished" {
     summary
 -8<-
 No tests defined
@@ -210,7 +210,7 @@ Unable to find a test plan instance for this task.
   task osrc.kernel.barracuda.server.kvm.red_task.tapper.LK_38 {
     work 0%
     end $end_red
-    status red "Red task already finished" {
+    status yellow "Red task already finished" {
     summary
 -8<-
 No tests defined
