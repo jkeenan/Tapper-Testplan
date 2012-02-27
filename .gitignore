@@ -17,7 +17,7 @@ tapper_testrundb_development.sqlite
 tapper_reportsdb_development.sqlite
 MANIFEST
 META.yml
-MYMETA.yml
+MYMETA*
 t/file_upload/4/console
 inc/
 Makefile
