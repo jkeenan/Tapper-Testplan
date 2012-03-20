@@ -53,6 +53,7 @@ if ($pid == 0) {
         }
         exit 1;
 }
+qx(touch t/htdocs/Tapper_barracuda_g34_Matrix.csv);
 
 my $mailtext;
 my $mock_tj = Test::MockModule->new('Tapper::Testplan::Plugins::Taskjuggler');

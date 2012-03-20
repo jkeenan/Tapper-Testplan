@@ -65,6 +65,7 @@ Tapper::Config->subconfig->{testplans} = merge(
 
 
 
+qx(touch t/htdocs/Tapper_barracuda_g34_Matrix.csv);
 my $reporter = Tapper::Testplan::Generator->new();
 isa_ok($reporter, 'Tapper::Testplan::Generator');
 my @instances;
