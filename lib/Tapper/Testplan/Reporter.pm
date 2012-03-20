@@ -29,21 +29,31 @@ Tapper::Testplan::Reporter - Main module for testplan reporting!
 
 =head2 run
 
+Get the tasks to report and do the reporting.
+
+@optparam array - list of tasks names
+
 =cut
 
 sub run
 {
-        my ($self)    = @_;
+        my ($self, @tasks)    = @_;
         my $plugin    = Tapper::Config->subconfig->{testplans}{reporter}{plugin}{name} || 'Taskjuggler';
-        my $intervall = Tapper::Config->subconfig->{testplans}{reporter}{interval};
+        my $intervall;
 
         eval "use Tapper::Testplan::Plugins::$plugin";
         my $reporter = "Tapper::Testplan::Plugins::$plugin"->new(cfg => Tapper::Config->subconfig->{testplans}{reporter}{plugin});
         my $util     = Tapper::Testplan::Utils->new();
 
         my @reports;
+
+        if (not @tasks) {
+                @tasks     = $reporter->get_tasks();
+                $intervall = Tapper::Config->subconfig->{testplans}{reporter}{interval};
+        }
+
  TASK:
-        foreach my $task ($reporter->get_tasks()) {
+        foreach my $task (@tasks) {
 
                 my $task_success = $util->get_testplan_success($task->{path}, $intervall);
                 $task = merge($task, $task_success);
