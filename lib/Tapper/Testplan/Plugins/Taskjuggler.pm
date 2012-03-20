@@ -392,6 +392,7 @@ sub send_reports
  REPORT:
         for (my $num=0; $num < int @reports; $num++) { # need to know when we reached the last report
                 my $report = $reports[$num];
+                $report->{end} ||= $parser->parse_datetime("next monday at 0:00")->set_formatter($formatter);
                 $report->{work_end} = $report->{end}->set_formatter($formatter);
                 $report->{path} =~ s|/|.|g;
                 $report->{work} = sprintf ("%.2f",100/(int @reports));
