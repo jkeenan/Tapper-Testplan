@@ -73,7 +73,9 @@ sub get_platforms
 {
         my ($self) = @_;
         my $tempdir = tempdir( CLEANUP => 1 );
-        system("rsync -a  tapper\@osrc:/var/www/htdocs/pub/schedules/Tapper_* $tempdir/"); ;
+        my $source = 'tapper@osrc:/var/www/htdocs/pub/schedules/Tapper_*';
+        $source    = 't/htdocs/' if $ENV{HARNESS_ACTIVE};
+        system("rsync -a $source $tempdir/"); ;
         my @filenames = qx(find $tempdir/ -type f -mtime -7);
         my @platforms;
 
