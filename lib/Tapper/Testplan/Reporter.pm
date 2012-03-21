@@ -56,6 +56,7 @@ sub run
         foreach my $task (@tasks) {
 
                 my $task_success = $util->get_testplan_success($task->{path}, $intervall);
+                 Hash::Merge::set_behavior( 'LEFT_PRECEDENT' );
                 $task = merge($task, $task_success);
                 push @reports, $task;
         }

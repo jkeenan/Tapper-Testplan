@@ -55,6 +55,7 @@ sub get_testplan_success
 
         my $task;
         if ($instance) {
+                $task->{name} = $instance->name;
                 my @testrun_ids = map {$_->id } $instance->testruns;
                 my $stats   = model('ReportsDB')->resultset('ReportgroupTestrunStats')->search({testrun_id => {-in => [@testrun_ids]}});
                 my $success = 0;
