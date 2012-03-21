@@ -82,6 +82,7 @@ Tapper::Config->subconfig->{testplans} = merge(
                                                     interval => 1*24*60*60,
                                                   }
                                                 });
+my $baseurl = Tapper::Config->subconfig->{base_url};
 
 
 
@@ -132,7 +133,7 @@ Success ratio 75%
     details
 -8<-
 === Link to testplan ===
-[https://tapper/tapper/testplan/id/1 https://tapper/tapper/testplan/id/1]
+[$baseurl/testplan/id/1 $baseurl/testplan/id/1]
 ->8-
     }
   }
@@ -161,7 +162,7 @@ All tests successful for this test plan
     details
 -8<-
 === Link to testplan ===
-[https://tapper/tapper/testplan/id/3 https://tapper/tapper/testplan/id/3]
+[$baseurl/testplan/id/3 $baseurl/testplan/id/3]
 ->8-
     }
   }
@@ -176,7 +177,7 @@ All tests successful for this test plan
     details
 -8<-
 === Link to testplan ===
-[https://tapper/tapper/testplan/id/2 https://tapper/tapper/testplan/id/2]
+[$baseurl/testplan/id/2 $baseurl/testplan/id/2]
 ->8-
     }
   }
