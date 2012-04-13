@@ -35,6 +35,7 @@ requires 'File::ShareDir'                 => 0;
 requires 'File::Slurp'                    => 0;
 requires 'Moose'                          => 0;
 requires 'Template'                       => 0;
+requires 'Template::Plugin::Autoformat'   => 0;
 requires 'Text::CSV::Slurp'               => 0;
 requires 'WWW::Mechanize'                 => 0;
 
