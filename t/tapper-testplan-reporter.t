@@ -77,7 +77,8 @@ Tapper::Config->subconfig->{testplans} = merge(
                                                 { reporter   =>
                                                   { plugin   => { name      => 'Taskjuggler',
                                                                   url       => $d->url,
-                                                                  cacheroot =>  '/tmp/cacheroot_test/'
+                                                                  cacheroot =>  '/tmp/cacheroot_test/',
+                                                                  base_url  => "http://tapper",
                                                                 },
                                                     interval => 1*24*60*60,
                                                   }
