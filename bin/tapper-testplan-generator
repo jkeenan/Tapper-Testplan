@@ -1,4 +1,6 @@
-#! perl
+#! /usr/bin/perl
+# PODNAME: tapper-testplan-generator
+# ABSTRACT: cmdline frontend to Tapper::Testplan::Generator
 
 use strict;
 use warnings;

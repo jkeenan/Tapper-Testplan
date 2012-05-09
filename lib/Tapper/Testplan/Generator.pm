@@ -1,4 +1,5 @@
 package Tapper::Testplan::Generator;
+# ABSTRACT: Main module for generating testplan instances
 
 use warnings;
 use strict;
@@ -13,13 +14,7 @@ use Template;
 
 extends 'Tapper::Testplan';
 
-=head1 NAME
-
-Tapper::Testplan::Generator - Main module for generating testplan instances!
-
-
 =head1 SYNOPSIS
-
 
     use Tapper::Testplan::Generator;
 
@@ -104,23 +99,5 @@ sub run
         }
         return @instances;
 }
-
-=head1 AUTHOR
-
-AMD OSRC Tapper Team, C<< <tapper at amd64.org> >>
-
-=head1 BUGS
-
-
-=head1 ACKNOWLEDGEMENTS
-
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008-2011 AMD OSRC Tapper Team, all rights reserved.
-
-This program is released under the following license: freebsd
-
-=cut
 
 1; # End of Tapper::Testplan::Generator

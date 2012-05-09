@@ -1,4 +1,6 @@
-#! perl
+#! /usr/bin/perl
+# PODNAME: tapper-testplan-reporter
+# ABSTRACT: cmdline frontend to Tapper::Testplan::Reporter
 
 use strict;
 use warnings;
