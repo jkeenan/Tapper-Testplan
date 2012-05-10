@@ -82,6 +82,7 @@ sub get_platforms
         foreach my $file (@filenames) {
                 chomp $file;
                 my ($platform_name) = $file =~ m/Tapper_(.+)_Matrix/;
+                next if not $platform_name;
                 $platform_name      =~ tr/_/-/;
                 open my $fh, '<', $file or die "Can not open $file:$!";
                 my $content = do { local $/; <$fh> };
