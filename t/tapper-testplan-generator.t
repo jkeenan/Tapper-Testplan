@@ -117,7 +117,7 @@ if (@instances) {
             'program' => '/opt/artemis/bin/artemis-netperf-server'
           }
         ], 'Preconditions on first created testrun');
-        
+
 } else {
         fail "Can not test without instances";
 }

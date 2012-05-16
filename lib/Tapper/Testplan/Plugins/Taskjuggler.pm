@@ -181,7 +181,7 @@ sub get_testplan_color
 
 
 
-=head2
+=head2 prepare_task_data
 
 Prepare a task overview for WebGUI.
 

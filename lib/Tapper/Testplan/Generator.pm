@@ -48,7 +48,7 @@ sub apply_macro
                                INCLUDE_PATH =>  $include_path_list,
                                });
         my $ttapplied;
-        
+
         $tt->process(\$macro, $substitutes, \$ttapplied) || die $tt->error();
         return $ttapplied;
 }
@@ -79,7 +79,7 @@ sub run
         my @instances;
  TASK:
         foreach my $task ($reporter->get_tasks()) {
-                
+
                 my $path  = $task->{path};
                 my $name  = $task->{name};
 
@@ -91,7 +91,7 @@ sub run
 
                 my $file = Tapper::Config->subconfig->{paths}{testplan_path}.$path;
                 next TASK unless -e $file;
-                
+
                 my $plan = slurp($file);
                 $plan = $self->apply_macro($plan);
                 my $cmd = Tapper::Cmd::Testplan->new();
