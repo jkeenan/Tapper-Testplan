@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+4.0.1     2012-05-16
         - allow explicit list of tasks
         - Get file platform files using rsync instead of WWW
         - report missing testplan/tests as YELLOW, not RED
