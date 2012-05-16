@@ -1,6 +1,15 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - allow explicit list of tasks
+        - Get file platform files using rsync instead of WWW
+        - report missing testplan/tests as YELLOW, not RED
+        - Improved text of mail report
+        - date calculation reworked (timezone now always local)
+        - allow testplan report mail to CC:
+        - provide links to testplan instead of testruns
+        - Show testplan id in TJ overview
+        - support for TaskJuggler testplans in web
         - big Dist::Zilla roundhouse kick
 
 2011-04-07  Steffen Schwigon  <steffen.schwigon@amd.com>
