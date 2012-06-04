@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - update troublemaker deps
 
 4.0.1     2012-05-16
         - allow explicit list of tasks
