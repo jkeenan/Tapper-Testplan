@@ -1,8 +1,8 @@
 ---
 
-# -------------------- users
+# -------------------- owners
 
-- schema: User
+- schema: Owner
   name: sschwigo
   data:
     id: 12
@@ -33,7 +33,7 @@
   name: finished_tr
   data:
     id: 1
-    owner_user_id: 12
+    owner_id: 12
     shortname: finished_tr
     notes: finished testrun in testplan 1
     topic_name: Software
@@ -51,7 +51,7 @@
   name: running_tr
   data:
     id: 2
-    owner_user_id: 12
+    owner_id: 12
     shortname: running_tr
     notes: running testrun in testplan 1
     topic_name: Software
@@ -69,7 +69,7 @@
   name: scheduled_tr
   data:
     id: 3
-    owner_user_id: 12
+    owner_id: 12
     shortname: scheduled_tr
     notes: scheduled testrun in testplan 1
     topic_name: Software
@@ -88,7 +88,7 @@
   name: finished_tr
   data:
     id: 4
-    owner_user_id: 12
+    owner_id: 12
     shortname: finished_tr
     notes: finished testrun in testplan 1
     topic_name: Software
@@ -107,7 +107,7 @@
   name: finished_tr
   data:
     id: 5
-    owner_user_id: 12
+    owner_id: 12
     shortname: finished_tr
     notes: finished testrun in testplan 1
     topic_name: Software
@@ -126,7 +126,7 @@
   name: noplan_tr
   data:
     id: 100
-    owner_user_id: 12
+    owner_id: 12
     shortname: noplan_tr
     notes: running testrun with no testplan
     topic_name: Software
