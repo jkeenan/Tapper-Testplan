@@ -46,7 +46,7 @@ sub get_testplan_success
         $instances = $instances->search({created_at => { '>=' => $now - $interval }}) if $interval;
 
         # always use the most current,
-        my $instance = $instances->first;
+        my $instance = $instances->search({}, {rows => 1})->first;
 
 
         my $task;
