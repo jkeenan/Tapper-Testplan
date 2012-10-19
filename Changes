@@ -1,6 +1,12 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        * PostgreSQL support
+        - [FIX] slow first() usage
+        - rename USER into OWNER
+
+        * Misc
+        - script functionality moved into CLI
 
 4.0.2     2012-06-04
         - update troublemaker deps
