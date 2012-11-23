@@ -1,0 +1,62 @@
+Revision history for {{$dist->name}}
+
+{{$NEXT}}
+
+4.1.1     2012-11-20
+        - dzil pluginbundle TAPPER
+
+4.1.0     2012-10-19
+        * PostgreSQL support
+        - [FIX] slow first() usage
+        - rename USER into OWNER
+
+        * Misc
+        - script functionality moved into CLI
+
+4.0.2     2012-06-04
+        - update troublemaker deps
+
+4.0.1     2012-05-16
+        - allow explicit list of tasks
+        - Get file platform files using rsync instead of WWW
+        - report missing testplan/tests as YELLOW, not RED
+        - Improved text of mail report
+        - date calculation reworked (timezone now always local)
+        - allow testplan report mail to CC:
+        - provide links to testplan instead of testruns
+        - Show testplan id in TJ overview
+        - support for TaskJuggler testplans in web
+        - big Dist::Zilla roundhouse kick
+
+2011-04-07  Steffen Schwigon  <steffen.schwigon@amd.com>
+
+	* v3.0.10
+
+	* even more detailed dependencies
+	* fix test: datetime calculation for end time (rt#67058)
+	* release version++ roundhouse kick
+
+2011-03-30 Steffen Schwigon <steffen.schwigon@amd.com>
+
+	* v3.0.6
+
+	* rewritable shebang line
+
+2011-03-24 Steffen Schwigon <steffen.schwigon@amd.com>
+
+	* v3.0.5
+
+	* fix dependencies (rt#66800)
+
+2011-03-10 Steffen Schwigon <steffen.schwigon@amd.com>
+
+	* v3.0.4
+
+	* distro maintenance
+
+2011-03-02  Steffen Schwigon  <steffen.schwigon@amd.com>
+
+	* v3.0
+
+	* first public CPAN release
+

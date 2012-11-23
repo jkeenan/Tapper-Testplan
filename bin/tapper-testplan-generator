@@ -1,9 +1,0 @@
-#! perl
-
-use strict;
-use warnings;
-use 5.010;
-
-use Tapper::Testplan::Generator;
-my $generator = Tapper::Testplan::Generator->new();
-$generator->run;

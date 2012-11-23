@@ -1,4 +1,5 @@
 package Tapper::Testplan::Generator;
+# ABSTRACT: Main module for generating testplan instances
 
 use warnings;
 use strict;
@@ -13,13 +14,7 @@ use Template;
 
 extends 'Tapper::Testplan';
 
-=head1 NAME
-
-Tapper::Testplan::Generator - Main module for generating testplan instances!
-
-
 =head1 SYNOPSIS
-
 
     use Tapper::Testplan::Generator;
 
@@ -53,7 +48,7 @@ sub apply_macro
                                INCLUDE_PATH =>  $include_path_list,
                                });
         my $ttapplied;
-        
+
         $tt->process(\$macro, $substitutes, \$ttapplied) || die $tt->error();
         return $ttapplied;
 }
@@ -84,7 +79,7 @@ sub run
         my @instances;
  TASK:
         foreach my $task ($reporter->get_tasks()) {
-                
+
                 my $path  = $task->{path};
                 my $name  = $task->{name};
 
@@ -96,7 +91,7 @@ sub run
 
                 my $file = Tapper::Config->subconfig->{paths}{testplan_path}.$path;
                 next TASK unless -e $file;
-                
+
                 my $plan = slurp($file);
                 $plan = $self->apply_macro($plan);
                 my $cmd = Tapper::Cmd::Testplan->new();
@@ -104,23 +99,5 @@ sub run
         }
         return @instances;
 }
-
-=head1 AUTHOR
-
-AMD OSRC Tapper Team, C<< <tapper at amd64.org> >>
-
-=head1 BUGS
-
-
-=head1 ACKNOWLEDGEMENTS
-
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008-2011 AMD OSRC Tapper Team, all rights reserved.
-
-This program is released under the following license: freebsd
-
-=cut
 
 1; # End of Tapper::Testplan::Generator
