@@ -53,7 +53,7 @@ sub get_testplan_success
         if ($instance) {
                 $task->{name} = $instance->name;
                 my @testrun_ids = map {$_->id } $instance->testruns;
-                my $stats   = model('ReportsDB')->resultset('ReportgroupTestrunStats')->search({testrun_id => {-in => [@testrun_ids]}});
+                my $stats   = model('TestrunDB')->resultset('ReportgroupTestrunStats')->search({testrun_id => {-in => [@testrun_ids]}});
                 my $success = 0;
                 if ($stats->count) {
                         map { $success += $_->success_ratio } $stats->all;
