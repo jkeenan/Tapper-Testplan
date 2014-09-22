@@ -97,6 +97,7 @@ sub run
                 my $cmd = Tapper::Cmd::Testplan->new();
                 push @instances, $cmd->add($plan, $path, $name);
         }
+
         return @instances;
 }
 

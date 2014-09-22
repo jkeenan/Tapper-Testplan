@@ -187,3 +187,11 @@
     name: dickstone
     free: 1
     active: 1
+
+- schema: Host
+  name: bascha
+  data:
+    id: 8
+    name: bascha
+    free: 1
+    active: 1
